@@ -1,9 +1,9 @@
-﻿namespace EksamenRazorPage
+﻿namespace EksamenRazorPage.Models
 {
     public class Pokemon
     {
-        int ID { get; set; }
-        string Name { get; set; }
+        public int Id { get; private set; }
+        public string Name { get; set; }
         string Type1 { get; set; }
         string? Type2 { get; set; }
         List<Move> Movepool { get; set; }
@@ -12,7 +12,7 @@
 
         Pokemon(int id, string name, string type1)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Type1 = type1;
             Type2 = null;
@@ -23,7 +23,7 @@
 
         Pokemon(int id, string name, string type1, string type2)
         {
-            ID = id;
+            Id = id;
             Name = name;
             Type1 = type1;
             Type2 = type2;

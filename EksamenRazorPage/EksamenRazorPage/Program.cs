@@ -1,3 +1,7 @@
+using EksamenRazorPage;
+using Microsoft.EntityFrameworkCore;
+
+
 namespace EksamenRazorPage
 {
     public class Program

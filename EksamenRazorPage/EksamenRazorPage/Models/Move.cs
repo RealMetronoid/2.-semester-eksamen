@@ -1,4 +1,4 @@
-﻿namespace EksamenRazorPage
+﻿namespace EksamenRazorPage.Models
 {
     public class Move
     {
