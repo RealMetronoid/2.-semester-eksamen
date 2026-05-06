@@ -4,36 +4,37 @@
     {
         public int Id { get; private set; }
         public string Name { get; set; }
-        string Type1 { get; set; }
-        string? Type2 { get; set; }
-        List<Move> Movepool { get; set; }
-        Pokemon? PreEvolution { get; set; }
-        Pokemon? Evolution { get; set; }
+        public string Type1 { get; set; }
+        public string? Type2 { get; set; }
+        public List<Move> Movepool { get; set; }
+        //public Pokemon? PreEvolution { get; set; }
+        //public Pokemon? Evolution { get; set; }
 
-        Pokemon(int id, string name, string type1)
+        public Pokemon(int id, string name, string type1)
         {
             Id = id;
             Name = name;
             Type1 = type1;
             Type2 = null;
             Movepool = new List<Move>();
-            PreEvolution = null;
-            Evolution = null;
+            //PreEvolution = null;
+            //Evolution = null;
         }
 
-        Pokemon(int id, string name, string type1, string type2)
+        public Pokemon(int id, string name, string type1, string type2)
         {
             Id = id;
             Name = name;
             Type1 = type1;
             Type2 = type2;
             Movepool = new List<Move>();
-            PreEvolution = null;
-            Evolution = null;
+            //PreEvolution = null;
+            //Evolution = null;
         }
 
         // Methods.
         #region Pre-Evolution methods
+        /*
         public void SetPreEvolution(Pokemon preEvolution)
         {
             if (PreEvolution == null)
@@ -57,10 +58,11 @@
                 PreEvolution.Evolution = null;
                 PreEvolution = null;
             }
-        }
+        }*/
         #endregion
 
         #region Evolution methods
+        /*
         public void SetEvolution(Pokemon evolution)
         {
             if (Evolution == null)
@@ -85,7 +87,7 @@
                 Evolution.Evolution = null;
                 Evolution = null;
             }
-        }
+        }*/
         #endregion
 
         #region Movepool Methods
