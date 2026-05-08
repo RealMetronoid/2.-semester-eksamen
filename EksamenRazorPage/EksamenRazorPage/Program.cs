@@ -1,3 +1,7 @@
+using EksamenRazorPage;
+using Microsoft.EntityFrameworkCore;
+
+
 namespace EksamenRazorPage
 {
     public class Program
@@ -5,6 +9,10 @@ namespace EksamenRazorPage
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // SQLServer
+            builder.Services.AddDbContext<PokemonContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DddIntroConnectionString")));
 
             // Add services to the container.
             builder.Services.AddRazorPages();
