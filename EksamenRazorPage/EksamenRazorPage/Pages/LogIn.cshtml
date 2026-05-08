@@ -1,0 +1,60 @@
+﻿@page
+@model Login.Pages.LogInModel
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="stylesheet" href="~/css/login.css" />
+</head>
+
+<body>
+    <div class="login-container">
+
+        <a asp-page="/Index" class="back-home">← Back to Home</a>
+
+        <form method="post" class="login-card">
+
+            <h1 class="title">Welcome Back</h1>
+            <p class="subtitle">Please login to your account</p>
+
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="alert">
+                    @Model.Message
+                </div>
+            }
+
+            <div class="input-group">
+                <input asp-for="Username" type="text" required />
+                <label>Username / Email</label>
+            </div>
+
+            <div class="input-group">
+                <input asp-for="Password" type="password" required />
+                <label>Password</label>
+            </div>
+            
+            <button type="submit" asp-page-handler="LogIn" class="button">
+                Login
+            </button>
+
+            <div class="register">
+                <p>
+                    Don't have an account?
+                    <a asp-page="/Register">Register</a>
+                </p>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>
