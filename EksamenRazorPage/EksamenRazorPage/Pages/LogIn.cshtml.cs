@@ -1,5 +1,6 @@
 using EksamenRazorPage;
 using EksamenRazorPage.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace Login.Pages
         private readonly PokemonContext _context;
 
         public List<User> UserList { get; set; }
+
 
         public LogInModel(PokemonContext context)
         {
@@ -28,53 +30,40 @@ namespace Login.Pages
 
         public string Message { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
             UserList = _context.Users.ToList();
         }
 
+            UserList = _context.Users.ToList();
+        }
+
+
         public async Task<IActionResult> OnPostAsync()
         {
+            var user = _context.Users.FirstOrDefault(u =>
+                u.Username == Username ||
+                u.Email == Username);
 
-            foreach (User person in UserList)
+            if (user != null)
             {
-                if (Username == person.Username || Username == person.Email && Password == person.PasswordHash)
-                {
-                    Message = "Welcome";
-                    success = true;
-                }
-                else
-                {
-                    Message = "Wrong information";
-                }
+                var hasher = new PasswordHasher<User>();
 
+                var result = hasher.VerifyHashedPassword(
+                    user,
+                    user.PasswordHash,
+                    Password);
+
+                if (result == PasswordVerificationResult.Success)
+                {
+                    return RedirectToPage("/Index");
+                }
             }
 
-            if (success == true)
-            {
-                return RedirectToPage("/Index");
-            }
-
+            Message = "Wrong information";
             return Page();
         }
-        public async Task<IActionResult> OnPostLogInAsync()
-        {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u =>
-                    (u.Username == Username || u.Email == Username)
-                    && u.PasswordHash == Password);
 
-            if (user == null)
-            {
-                Message = "Forkert brugernavn eller adgangskode";
-                return Page();
-            }
-
-           
-            HttpContext.Session.SetString("Username", user.Username);
-
-            return RedirectToPage("/Index");
-        }
 
     }
 }
