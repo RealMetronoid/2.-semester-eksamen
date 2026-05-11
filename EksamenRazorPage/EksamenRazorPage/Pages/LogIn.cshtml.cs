@@ -30,7 +30,7 @@ namespace Login.Pages
 
         public void OnGet()
         {
-            //UserList = _context.Users.ToList();
+            UserList = _context.Users.ToList();
         }
 
         public async Task<IActionResult> OnPostAsync()
