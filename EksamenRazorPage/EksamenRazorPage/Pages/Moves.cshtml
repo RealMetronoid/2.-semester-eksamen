@@ -1,0 +1,93 @@
+﻿@page
+@model EksamenRazorPage.Pages.MovesModel
+@{
+    ViewData["Title"] = "Moves";
+}
+
+<h2 class="text-white mb-4">Moves</h2>
+
+<div class="d-flex gap-2 mb-3">
+    <input type="text" id="search" class="form-control"
+           placeholder="Søg på move-navn..." onkeyup="filterMoves()">
+
+    <select id="typeFilter" class="form-control" onchange="filterMoves()">
+        <option value="">Alle typer</option>
+        <option>Fire</option>
+        <option>Water</option>
+        <option>Grass</option>
+        <option>Electric</option>
+        <option>Psychic</option>
+        <option>Normal</option>
+        <option>Dragon</option>
+        <option>Poison</option>
+        <option>Ground</option>
+        <option>Flying</option>
+        <option>Bug</option>
+        <option>Rock</option>
+        <option>Ghost</option>
+        <option>Ice</option>
+        <option>Fighting</option>
+        <option>Steel</option>
+        <option>Dark</option>
+        <option>Fairy</option>
+    </select>
+
+    <select id="categoryFilter" class="form-control" onchange="filterMoves()">
+        <option value="">Alle kategorier</option>
+        <option>Physical</option>
+        <option>Special</option>
+        <option>Status</option>
+    </select>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-dark table-hover mb-0" id="movesTable">
+            <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Type</th>
+                    <th>Kategori</th>
+                    <th>Power</th>
+                    <th>PP</th>
+                    <th>Effekt</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var move in Model.MoveList)
+                {
+                    <tr>
+                        <td>@move.Name</td>
+                        <td>@move.Type</td>
+                        <td>@move.Category</td>
+                        <td>@move.Power</td>
+                        <td>@move.PowerPoints</td>
+                        <td>@move.Effect</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function filterMoves() {
+            const search = document.getElementById("search").value.toLowerCase();
+            const type = document.getElementById("typeFilter").value.toLowerCase();
+            const category = document.getElementById("categoryFilter").value.toLowerCase();
+
+            document.querySelectorAll("#movesTable tbody tr").forEach(row => {
+                const name = row.cells[0].textContent.toLowerCase();
+                const rowType = row.cells[1].textContent.toLowerCase();
+                const rowCategory = row.cells[2].textContent.toLowerCase();
+
+                const matchSearch = name.includes(search);
+                const matchType = type === "" || rowType === type;
+                const matchCategory = category === "" || rowCategory === category;
+
+                row.style.display = matchSearch && matchType && matchCategory ? "" : "none";
+            });
+        }
+    </script>
+}

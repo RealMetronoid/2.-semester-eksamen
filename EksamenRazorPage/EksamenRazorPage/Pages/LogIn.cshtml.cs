@@ -35,9 +35,7 @@ namespace Login.Pages
             UserList = _context.Users.ToList();
         }
 
-            UserList = _context.Users.ToList();
-        }
-
+       
 
         public async Task<IActionResult> OnPostAsync()
         {
