@@ -12,7 +12,7 @@ namespace EksamenRazorPage
 
             // SQLServer
             builder.Services.AddDbContext<PokemonContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DddIntroConnectionString")));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("PokemonDatabaseString")));
 
             // Add services to the container.
             builder.Services.AddRazorPages();
