@@ -1,10 +1,72 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Forside";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    
+<!-- Pokemon sektion -->
+<div class="pokemons text-center py-5">
+    <h1 class="display-5 fw-bold text-white">Pokemon Database</h1>
+    <p class="lead mb-4" style="color: #aaaaaa;">Søg og find information om Pokemon, moves og kommende events.</p>
+
+    <form method="get" asp-page="/Pokemon" class="d-flex justify-content-center gap-2">
+        <input type="text" name="search" class="form-control w-auto"
+               placeholder="Søg på navn..." style="min-width:260px">
+        <button type="submit" class="btn btn-danger">Søg</button>
+    </form>
+</div>
+
+<!-- INFOBOKSE -->
+<div class="row g-3 mb-5">
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Pokemon</h5>
+                <p class="card-text text-muted">Gennemse alle Pokemon.</p>
+                <a asp-page="/Pokemon" class="btn btn-outline-danger btn-sm">Se alle Pokemon</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Moves</h5>
+                <p class="card-text text-muted">Se stats og effekter for alle moves.</p>
+                <a asp-page="/Moves" class="btn btn-outline-danger btn-sm">Se alle moves</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Events</h5>
+                <p class="card-text text-muted">Upcoming Events.</p>
+                <a asp-page="/Event" class="btn btn-outline-danger btn-sm">Se events</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- UDVALGTE POKEMON -->
+<h4 class="mb-3">Udvalgte Pokemon</h4>
+<div class="row row-cols-2 row-cols-md-6 g-3">
+    @foreach (var p in Model.FeaturedPokemon)
+    {
+        <div class="col">
+            <a asp-page="/Pokemon" class="text-decoration-none">
+                <div class="card text-center h-100 pokemon-card">
+                    <div class="card-body p-2">
+                        <div class="pokemon-icon mb-1">🔴</div>
+                        <small class="text-muted">#@p.Id.ToString("D3")</small>
+                        <div class="fw-500">@p.Name</div>
+                        <span class="badge type-badge-@p.Type1.ToLower()">@p.Type1</span>
+                        @if (p.Type2 != null)
+                        {
+                            <span class="badge type-badge-@p.Type2.ToLower()">@p.Type2</span>
+                        }
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
 </div>
