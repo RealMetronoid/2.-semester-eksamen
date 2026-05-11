@@ -9,7 +9,7 @@ namespace EksamenRazorPage
         public DbSet<Move> Moves { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
-
+        public DbSet<Team> Teams { get; set; }
         public PokemonContext(DbContextOptions<PokemonContext> options)
             : base(options)
         {
