@@ -14,7 +14,7 @@
         <nav class="navbar navbar-expand-sm navbar-dark pokemon-navbar">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
-                     Pokedex
+                    Pokedex
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
@@ -39,9 +39,21 @@
                     </ul>
                     <!-- Højre side: Login -->
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-page="/LogIn">Log ind</a>
-                        </li>
+                        @if (Context.Session.GetString("Username") != null)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-white">@Context.Session.GetString("Username")</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/LogOut">Log ud</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/LogIn">Log ind</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -52,17 +64,14 @@
             @RenderBody()
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2026 - EksamenRazorPage - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
