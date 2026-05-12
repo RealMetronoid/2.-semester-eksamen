@@ -46,3 +46,32 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+.pokemon-navbar {
+    background-color: #b71c1c;
+    border-bottom: 3px solid #7f0000;
+    margin-bottom: 0;
+}
+
+    .pokemon-navbar .navbar-brand {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #fff !important;
+    }
+
+    .pokemon-navbar .nav-link {
+        color: rgba(255,255,255,0.85) !important;
+        padding: 0.5rem 1rem;
+    }
+
+        .pokemon-navbar .nav-link:hover {
+            color: #fff !important;
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+     
+        .pokemon-navbar .nav-link.active {
+            color: #fff !important;
+            background-color: rgba(0,0,0,0.25);
+            border-radius: 4px;
+        }
