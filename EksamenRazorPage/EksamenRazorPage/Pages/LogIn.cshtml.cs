@@ -59,7 +59,7 @@ namespace Login.Pages
         }
 
 
-    public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
             var user = _context.Users.FirstOrDefault(u =>
                 u.Username == Username ||
@@ -83,24 +83,7 @@ namespace Login.Pages
             Message = "Wrong information";
             return Page();
         }
-        public async Task<IActionResult> OnPostLogInAsync()
-        {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u =>
-                    (u.Username == Username || u.Email == Username)
-                    && u.PasswordHash == Password);
 
-            if (user == null)
-            {
-                Message = "Forkert brugernavn eller adgangskode";
-                return Page();
-            }
-
-           
-            HttpContext.Session.SetString("Username", user.Username);
-
-            return RedirectToPage("/Index");
-        }
 
     }
 }
