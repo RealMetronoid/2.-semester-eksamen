@@ -13,7 +13,7 @@ namespace Login.Pages
 
         private readonly PokemonContext _context;
 
-        public List<User> PersonList { get; set; }
+        public List<User> UserList { get; set; }
 
         [BindProperty]
         [Required]
@@ -49,7 +49,7 @@ namespace Login.Pages
 
         public void OnGet()
         {
-            
+            UserList = _context.Users.ToList();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -60,12 +60,12 @@ namespace Login.Pages
             }
 
             // 1. Check if user already exists
-            var existingUser = _context.Users.FirstOrDefault(p => p.Username == Username || p.Email == Email);
-            if (existingUser != null)
-            {
-                ModelState.AddModelError("", "Username or Email already exists.");
-                return Page();
-            }
+            //var existingUser = _context.Users.FirstOrDefault(p => p.Username == Username || p.Email == Email);
+            //if (existingUser != null)
+            //{
+            //    ModelState.AddModelError("", "Username or Email already exists.");
+            //    //return Page();
+            //}
 
             // 2. Hash password
             var hasher = new PasswordHasher<User>();

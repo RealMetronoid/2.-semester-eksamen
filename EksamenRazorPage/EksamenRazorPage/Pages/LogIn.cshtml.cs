@@ -20,7 +20,7 @@ namespace Login.Pages
             _context = context;
         }
         bool success;
-
+            
         [BindProperty]
         public string Username { get; set; }
 
@@ -32,8 +32,28 @@ namespace Login.Pages
 
         public async Task OnGetAsync()
         {
-            UserList = _context.Users.ToList();
-        }
+
+
+            // Check if user already exists
+            if (!_context.Users.Any(u => u.Username == "Marcus"))
+            {
+                var hasher = new PasswordHasher<User>();
+
+                var testUser = new User
+                {
+                    Username = "Marcus",
+                    DisplayName = "Marc3935",
+                    Email = "a@gmail.com"
+                };
+
+                // Hash password "abc"
+                testUser.PasswordHash =
+                    hasher.HashPassword(testUser, "abc");
+
+                _context.Users.Add(testUser);
+
+                await _context.SaveChangesAsync();
+            }
 
        
 
