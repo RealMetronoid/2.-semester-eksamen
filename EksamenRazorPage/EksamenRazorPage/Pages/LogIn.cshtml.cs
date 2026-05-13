@@ -20,7 +20,7 @@ namespace Login.Pages
             _context = context;
         }
         bool success;
-
+            
         [BindProperty]
         public string Username { get; set; }
 
