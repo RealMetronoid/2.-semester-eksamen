@@ -1,7 +1,10 @@
 ﻿namespace EksamenRazorPage.Models
 {
+
+
     public class Move
     {
+        public Move() { }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
@@ -22,5 +25,6 @@
             Effect = effect;
             SecondaryEffect = secondaryEffect;
         }
+        
     }
 }

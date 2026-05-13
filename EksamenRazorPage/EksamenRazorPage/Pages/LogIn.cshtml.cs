@@ -55,9 +55,7 @@ namespace Login.Pages
                 await _context.SaveChangesAsync();
             }
 
-            UserList = _context.Users.ToList();
-        }
-
+       
 
         public async Task<IActionResult> OnPostAsync()
         {
