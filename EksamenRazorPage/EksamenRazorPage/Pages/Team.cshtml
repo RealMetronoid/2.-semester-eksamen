@@ -1,54 +1,95 @@
 ﻿@page
 @model EksamenRazorPage.Pages.TeamModel
 @{
-    ViewData["Title"] = "Mine Hold";
+    ViewData["Title"] = "Mit Hold";
 }
 
 <h2 class="text-white mb-4">Mine Hold</h2>
 
-@if (Model.IsLoggedIn)
+<!-- Opret hold -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="post" asp-page-handler="Create" class="d-flex gap-2">
+            <input type="text" name="teamName" class="form-control" placeholder="Hold navn..." required>
+            <button type="submit" class="btn btn-danger">Opret hold</button>
+        </form>
+    </div>
+</div>
+
+@if (!Model.Teams.Any())
 {
-    <!-- Opret nyt hold -->
+    <p class="text-muted">Du har ingen hold endnu.</p>
+}
+
+@foreach (var team in Model.Teams)
+{
     <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="text-white mb-3">Opret nyt hold</h5>
-            <form method="post" asp-page-handler="Create" class="d-flex gap-2">
-                <input type="text" name="teamName" class="form-control"
-                       placeholder="Holdnavn..." required>
-                <button type="submit" class="btn btn-danger">Opret</button>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <strong>@team.Name</strong>
+            <form method="post" asp-page-handler="Delete">
+                <input type="hidden" name="teamId" value="@team.Id">
+                <button type="submit" class="btn btn-sm btn-outline-danger"
+                        onclick="return confirm('Slet holdet?')">
+                    Slet hold
+                </button>
             </form>
         </div>
-    </div>
+        <div class="card-body">
 
-    <!-- Liste over hold -->
-    @if (!Model.Teams.Any())
-    {
-        <p class="text-muted">Du har ingen hold endnu. Opret et ovenfor.</p>
-    }
-    else
-    {
-        <div class="row g-3">
-            @foreach (var team in Model.Teams)
-            {
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <h5 class="text-white mb-0">@team.Name</h5>
-                            <form method="post" asp-page-handler="Delete">
-                                <input type="hidden" name="teamId" value="@team.Id">
-                                <button type="submit" class="btn btn-outline-danger btn-sm">Slet</button>
-                            </form>
+            <!-- 6 slots -->
+            <div class="row g-2 mb-3">
+                @for (int slot = 1; slot <= 6; slot++)
+                {
+                    var member = team.Members.FirstOrDefault(m => m.Slot == slot);
+                    var pokemon = member != null
+                    ? Model.AllPokemon.FirstOrDefault(p => p.Id == member.PokemonId)
+                    : null;
+
+                    <div class="col-6 col-md-2">
+                        <div class="card text-center h-100"
+                             style="border: 2px @(pokemon != null ? "solid #b71c1c" : "dashed #555")">
+                            <div class="card-body p-2">
+                                @if (pokemon != null)
+                                {
+                                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/@(pokemon.Id).png"
+                                         style="width:64px;height:64px;image-rendering:pixelated;">
+                                    <div class="fw-bold small">@pokemon.Name</div>
+                                    <form method="post" asp-page-handler="RemoveMember" class="mt-1">
+                                        <input type="hidden" name="memberId" value="@member.Id">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">✕ Fjern</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <div style="font-size:2rem;color:#555;">+</div>
+                                    <small class="text-muted">Slot @slot</small>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
+            </div>
+
+            <!-- Tilføj pokemon -->
+            @if (team.Members.Count < 6)
+            {
+                <form method="post" asp-page-handler="AddMember" class="d-flex gap-2">
+                    <input type="hidden" name="teamId" value="@team.Id">
+                    <select name="pokemonId" class="form-control">
+                        <option value="0">Vælg en Pokemon...</option>
+                        @foreach (var p in Model.AllPokemon)
+                        {
+                            <option value="@p.Id">#@p.Id.ToString("D3") @p.Name</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-danger">Tilføj</button>
+                </form>
             }
+            else
+            {
+                <small class="text-muted">Holdet er fuldt (6/6)</small>
+            }
+
         </div>
-    }
-}
-else
-{
-    <p class="text-muted">
-        Du skal være logget ind for at se dine hold.
-        <a asp-page="/LogIn" class="text-danger">Log ind her</a>
-    </p>
+    </div>
 }

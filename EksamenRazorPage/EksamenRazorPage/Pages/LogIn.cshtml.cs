@@ -74,6 +74,8 @@ namespace Login.Pages
 
                 if (result == PasswordVerificationResult.Success)
                 {
+                    HttpContext.Session.SetString("Username", user.Username);
+                    HttpContext.Session.SetString("UserId", user.Id.ToString());
                     return RedirectToPage("/Index");
                 }
             }
