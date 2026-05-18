@@ -43,7 +43,8 @@ namespace Login.Pages
                 {
                     Username = "Marcus",
                     DisplayName = "Marc3935",
-                    Email = "a@gmail.com"
+                    Email = "a@gmail.com",
+                    IsAdmin = true
                 };
 
                 // Hash password "abc"
@@ -56,7 +57,7 @@ namespace Login.Pages
             }
         }
 
-       
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
