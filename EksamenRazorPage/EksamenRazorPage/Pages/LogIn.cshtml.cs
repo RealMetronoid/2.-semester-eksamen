@@ -57,8 +57,6 @@ namespace Login.Pages
             }
         }
 
-        }
-
         public async Task<IActionResult> OnPostAsync()
         {
             var user = _context.Users.FirstOrDefault(u =>
@@ -77,7 +75,8 @@ namespace Login.Pages
                 if (result == PasswordVerificationResult.Success)
                 {
                     HttpContext.Session.SetString("Username", user.Username);
-                    HttpContext.Session.SetString("UserId", user.Id.ToString());
+                    HttpContext.Session.SetInt32("UserId", user.Id);
+                    HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
                     return RedirectToPage("/Index");
                 }
             }
