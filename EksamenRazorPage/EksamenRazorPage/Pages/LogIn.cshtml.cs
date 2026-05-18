@@ -54,6 +54,7 @@ namespace Login.Pages
 
                 await _context.SaveChangesAsync();
             }
+        }
 
        
 
