@@ -1,0 +1,151 @@
+﻿@page "/Pokemon/View/{id}"
+@model EksamenRazorPage.Pages.ViewModel
+@{
+    ViewData["Title"] = "View"; 
+}
+
+<h1>@Model.SelectedPokemon.Name</h1>
+
+<div class="row">
+    <div class="col-4">
+        <img />
+    </div>
+    <div class="col-8">
+        <table class="d-block w-100">
+            <tbody>
+                <!-- One tr is one row with name, stat number and a barto showcase. -->
+                <!-- HP Stat -->
+                <tr>
+                    <th>HP</th>
+                    <td>@Model.SelectedPokemon.HP</td>
+                    <td> <!-- Aria values is used to support older browsers. Will add more info in report. -->  
+                        <div class="progress">
+                            <div class="progress-bar"
+                                    role="progressbar"
+                                    aria-valuenow="@Model.SelectedPokemon.HP"
+                                    aria-valuemin="0"
+                                    aria-valuemax="255"
+                                    style="width:@Model.SelectedPokemon.HP%">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Attack Stat -->
+                <tr>
+                    <th>Attack</th>
+                    <td>@Model.SelectedPokemon.Attack</td>
+                    <td>
+                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 aria-valuenow="@Model.SelectedPokemon.Attack"
+                                 aria-valuemin="0"
+                                 aria-valuemax="255"
+                                 style="width:@Model.SelectedPokemon.Attack%">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Defense Stat -->
+                <tr>
+                    <th>Defense</th>
+                    <td>@Model.SelectedPokemon.Defense</td>
+                    <td>
+                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 aria-valuenow="@Model.SelectedPokemon.Defense"
+                                 aria-valuemin="0"
+                                 aria-valuemax="255"
+                                 style="width:@Model.SelectedPokemon.Defense%">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Sp. Attack -->
+                <tr>
+                    <th>Sp. Attack</th>
+                    <td>@Model.SelectedPokemon.SpAtk</td>
+                    <td>
+                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 aria-valuenow="@Model.SelectedPokemon.SpAtk"
+                                 aria-valuemin="0"
+                                 aria-valuemax="255"
+                                 style="width:@Model.SelectedPokemon.SpAtk%">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Sp. Defense -->
+                <tr>
+                    <th>Sp. Defense</th>
+                    <td>@Model.SelectedPokemon.SpDef</td>
+                    <td>
+                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 aria-valuenow="@Model.SelectedPokemon.SpDef"
+                                 aria-valuemin="0"
+                                 aria-valuemax="255"
+                                 style="width:@Model.SelectedPokemon.SpDef%">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Speed -->
+                <tr>
+                    <th>Speed</th>
+                    <td>@Model.SelectedPokemon.Speed</td>
+                    <td>
+                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
+                        <div class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 aria-valuenow="@Model.SelectedPokemon.Speed"
+                                 aria-valuemin="0"
+                                 aria-valuemax="255"
+                                 style="width:@Model.SelectedPokemon.Speed%">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-8">
+        <h2>Moves</h2>
+        <div class="col justify-content-center">
+            <table class="table table-dark table-hover mb-0" id="movesTable">
+                <thead>
+                    <tr>
+                        <th>Navn</th>
+                        <th>Type</th>
+                        <th>Kategori</th>
+                        <th>Power</th>
+                        <th>PP</th>
+                        <th>Effekt</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var move in Model.SelectedPokemon.Movepool)
+                    {
+                        <tr>
+                            <td>@move.Name</td>
+                            <td>@move.Type</td>
+                            <td>@move.Category</td>
+                            <td>@move.Power</td>
+                            <td>@move.PowerPoints</td>
+                            <td>@move.Effect</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
