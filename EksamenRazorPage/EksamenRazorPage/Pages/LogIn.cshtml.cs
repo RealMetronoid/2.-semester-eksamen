@@ -43,7 +43,8 @@ namespace Login.Pages
                 {
                     Username = "Marcus",
                     DisplayName = "Marc3935",
-                    Email = "a@gmail.com"
+                    Email = "a@gmail.com",
+                    IsAdmin = true
                 };
 
                 // Hash password "abc"
@@ -76,7 +77,8 @@ namespace Login.Pages
                 if (result == PasswordVerificationResult.Success)
                 {
                     HttpContext.Session.SetString("Username", user.Username);
-                    HttpContext.Session.SetString("UserId", user.Id.ToString());
+                    HttpContext.Session.SetInt32("UserId", user.Id);
+                    HttpContext.Session.SetString("IsAdmin", user.IsAdmin.ToString());
                     return RedirectToPage("/Index");
                 }
             }
