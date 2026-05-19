@@ -56,7 +56,7 @@
             <a asp-page="/Pokemon" class="text-decoration-none">
                 <div class="card text-center h-100 pokemon-card">
                     <div class="card-body p-2">
-                        <div class="pokemon-icon mb-1">🔴</div>
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/@(p.Id).png" alt="@p.Name" style="width:80px" />
                         <small class="text-muted">#@p.Id.ToString("D3")</small>
                         <div class="fw-500">@p.Name</div>
                         <span class="badge type-badge-@p.Type1.ToLower()">@p.Type1</span>
