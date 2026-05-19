@@ -1,14 +1,15 @@
 ﻿@page "/Pokemon/View/{id}"
 @model EksamenRazorPage.Pages.ViewModel
 @{
-    ViewData["Title"] = "View"; 
+    ViewData["Title"] = "View";
 }
 
 <h1>@Model.SelectedPokemon.Name</h1>
 
 <div class="row">
     <div class="col-4">
-        <img />
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/@(Model.SelectedPokemon.Id).png"
+             alt="@Model.SelectedPokemon.Name" />
     </div>
     <div class="col-8">
         <table class="d-block w-100">
@@ -18,14 +19,15 @@
                 <tr>
                     <th>HP</th>
                     <td>@Model.SelectedPokemon.HP</td>
-                    <td> <!-- Aria values is used to support older browsers. Will add more info in report. -->  
+                    <td>
+                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
                         <div class="progress">
                             <div class="progress-bar"
-                                    role="progressbar"
-                                    aria-valuenow="@Model.SelectedPokemon.HP"
-                                    aria-valuemin="0"
-                                    aria-valuemax="255"
-                                    style="width:@Model.SelectedPokemon.HP%">
+                                 role="progressbar"
+                                 aria-valuenow="@Model.SelectedPokemon.HP"
+                                 aria-valuemin="0"
+                                 aria-valuemax="255"
+                                 style="width:@Model.SelectedPokemon.HP%">
                             </div>
                         </div>
                     </td>
@@ -35,7 +37,6 @@
                     <th>Attack</th>
                     <td>@Model.SelectedPokemon.Attack</td>
                     <td>
-                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
                         <div class="progress">
                             <div class="progress-bar"
                                  role="progressbar"
@@ -52,7 +53,6 @@
                     <th>Defense</th>
                     <td>@Model.SelectedPokemon.Defense</td>
                     <td>
-                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
                         <div class="progress">
                             <div class="progress-bar"
                                  role="progressbar"
@@ -69,7 +69,6 @@
                     <th>Sp. Attack</th>
                     <td>@Model.SelectedPokemon.SpAtk</td>
                     <td>
-                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
                         <div class="progress">
                             <div class="progress-bar"
                                  role="progressbar"
@@ -86,7 +85,6 @@
                     <th>Sp. Defense</th>
                     <td>@Model.SelectedPokemon.SpDef</td>
                     <td>
-                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
                         <div class="progress">
                             <div class="progress-bar"
                                  role="progressbar"
@@ -103,7 +101,6 @@
                     <th>Speed</th>
                     <td>@Model.SelectedPokemon.Speed</td>
                     <td>
-                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
                         <div class="progress">
                             <div class="progress-bar"
                                  role="progressbar"
