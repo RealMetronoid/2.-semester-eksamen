@@ -25,7 +25,7 @@
                 <td>@pokemon.Name</td>
                 <td>@pokemon.Type1<br />@pokemon.Type2</td>
                 <td>
-                    <img src="@pokemon.ImageUrl" alt="@pokemon.Name" />
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/@(pokemon.Id).png" alt="@pokemon.Name" />
                 </td>
                 <td><a asp-page="/View" asp-route-Id="@pokemon.Id" class="stretched-link"></a></td>
             </tr>
