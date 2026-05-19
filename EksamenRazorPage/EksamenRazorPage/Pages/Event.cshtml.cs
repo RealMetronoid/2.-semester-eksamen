@@ -19,11 +19,99 @@ namespace EksamenRazorPage.Pages
         [BindProperty]
         public Event NewEvent { get; set; } = new();
 
+        [BindProperty]
+        public Event EditEvent { get; set; } = new();
 
         [BindProperty(SupportsGet = true)]
         public string? SelectedEventType { get; set; }
 
         public void OnGet()
+        {
+            LoadEvents();
+        }
+
+        // CREATE EVENT - ADMIN ONLY
+        public IActionResult OnPostAddEvent()
+        {
+            if (!CurrentUserIsAdmin())
+            {
+                return RedirectToPage("/Index");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                LoadEvents();
+                return Page();
+            }
+
+            NewEvent.IsActive = true;
+
+            _context.Events.Add(NewEvent);
+            _context.SaveChanges();
+
+            return RedirectToPage();
+        }
+
+        // UPDATE EVENT - ADMIN ONLY
+        public IActionResult OnPostUpdateEvent()
+        {
+            if (!CurrentUserIsAdmin())
+            {
+                return RedirectToPage("/Index");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                LoadEvents();
+                return Page();
+            }
+
+            var existingEvent = _context.Events.FirstOrDefault(e => e.Id == EditEvent.Id);
+
+            if (existingEvent == null)
+            {
+                return NotFound();
+            }
+
+            existingEvent.Name = EditEvent.Name;
+            existingEvent.Description = EditEvent.Description;
+            existingEvent.Date = EditEvent.Date;
+            existingEvent.Url = EditEvent.Url;
+            existingEvent.EventType = EditEvent.EventType;
+            existingEvent.IsActive = EditEvent.IsActive;
+
+            _context.SaveChanges();
+
+            return RedirectToPage();
+        }
+
+        // DELETE EVENT - ADMIN ONLY
+        public IActionResult OnPostDeleteEvent(int id)
+        {
+            if (!CurrentUserIsAdmin())
+            {
+                return RedirectToPage("/Index");
+            }
+
+            var eventToDelete = _context.Events.FirstOrDefault(e => e.Id == id);
+
+            if (eventToDelete == null)
+            {
+                return NotFound();
+            }
+
+            // Soft delete recommended because you already use IsActive
+            eventToDelete.IsActive = false;
+
+            // If you want permanent delete instead, use this:
+            // _context.Events.Remove(eventToDelete);
+
+            _context.SaveChanges();
+
+            return RedirectToPage();
+        }
+
+        private void LoadEvents()
         {
             var query = _context.Events
                 .Where(e => e.IsActive)
@@ -40,23 +128,23 @@ namespace EksamenRazorPage.Pages
                 .ToList();
         }
 
-
-        public IActionResult OnPostAddEvent()
+        private bool CurrentUserIsAdmin()
         {
-            if (!ModelState.IsValid)
-            {
-                Events = _context.Events
-                    .OrderBy(e => e.Date)
-                    .ToList();
+            int? userId = HttpContext.Session.GetInt32("UserId");
 
-                return Page();
+            if (userId == null)
+            {
+                return false;
             }
 
-            _context.Events.Add(NewEvent);
-            _context.SaveChanges();
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId.Value);
 
-            return RedirectToPage();
+            if (user == null)
+            {
+                return false;
+            }
+
+            return user.IsAdmin;
         }
-
     }
 }

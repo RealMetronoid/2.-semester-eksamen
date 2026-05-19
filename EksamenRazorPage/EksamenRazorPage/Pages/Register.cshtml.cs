@@ -60,12 +60,12 @@ namespace Login.Pages
             }
 
             // 1. Check if user already exists
-            //var existingUser = _context.Users.FirstOrDefault(p => p.Username == Username || p.Email == Email);
-            //if (existingUser != null)
-            //{
-            //    ModelState.AddModelError("", "Username or Email already exists.");
-            //    //return Page();
-            //}
+            var existingUser = _context.Users.FirstOrDefault(p => p.Username == Username || p.Email == Email);
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("", "Username or Email already exists.");
+                //return Page();
+            }
 
             // 2. Hash password
             var hasher = new PasswordHasher<User>();
@@ -74,7 +74,8 @@ namespace Login.Pages
             {
                 Username = Username,
                 DisplayName = DisplayName,
-                Email = Email
+                Email = Email,
+                IsAdmin = false
             };
 
             // Convert password into secure hash
