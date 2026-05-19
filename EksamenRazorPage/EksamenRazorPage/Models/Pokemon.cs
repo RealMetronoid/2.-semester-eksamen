@@ -15,7 +15,7 @@
         public int Speed { get; set; }
 
         public string ImageUrl { get; set; }
-        public List<Move> Movepool { get; set; }
+        public List<Move> Movepool { get; set; } = [];
         //public Pokemon? PreEvolution { get; set; }
         //public Pokemon? Evolution { get; set; }
 
