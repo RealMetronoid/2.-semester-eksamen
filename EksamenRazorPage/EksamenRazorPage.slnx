@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="EksamenRazorPage/EksamenRazorPage.csproj" />
-  <Project Path="TestProject1/TestProject1.csproj" Id="f45c4b68-ff43-4ee0-8241-48ffe9de6ad9" />
+  <Project Path="TestProject1/TestProject1.csproj" Id="f45c4b68-ff43-4ee0-8241-48ffe9de6ad9">
+    <Build Solution="Debug|*" Project="false" />
+  </Project>
 </Solution>
