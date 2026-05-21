@@ -10,10 +10,14 @@ namespace Login.Pages
 {
     public class RegisterModel : PageModel
     {
-
         private readonly PokemonContext _context;
 
-        public List<User> UserList { get; set; }
+        public RegisterModel(PokemonContext context)
+        {
+            _context = context;
+        }
+
+        public List<User> UserList { get; set; } = new();
 
         [BindProperty]
         [Required]
@@ -33,41 +37,40 @@ namespace Login.Pages
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public string PasswordHash { get; set; }
-
         [BindProperty]
         [Required]
         [Compare("Password", ErrorMessage = "Passwords do not match")]
         public string ConfirmPassword { get; set; }
 
+        [BindProperty]
+        public User EditUser { get; set; } = new();
 
-
-        public RegisterModel(PokemonContext context)
-        {
-            _context = context;
-        }
+        [BindProperty]
+        public string? NewPassword { get; set; }
 
         public void OnGet()
         {
-            UserList = _context.Users.ToList();
+            LoadUsers();
         }
 
+        // CREATE USER / REGISTER
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                LoadUsers();
                 return Page();
             }
 
-            // 1. Check if user already exists
-            var existingUser = _context.Users.FirstOrDefault(p => p.Username == Username || p.Email == Email);
+            var existingUser = _context.Users.FirstOrDefault(p => p.Username == Username);
+
             if (existingUser != null)
             {
-                ModelState.AddModelError("", "Username or Email already exists.");
-                //return Page();
+                ModelState.AddModelError("", "Username already exists.");
+                LoadUsers();
+                return Page();
             }
 
-            // 2. Hash password
             var hasher = new PasswordHasher<User>();
 
             var newUser = new User
@@ -78,14 +81,11 @@ namespace Login.Pages
                 IsAdmin = false
             };
 
-            // Convert password into secure hash
             newUser.PasswordHash = hasher.HashPassword(newUser, Password);
 
-            // 3. Save to DB
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
 
-            //4.Clear form
             ModelState.Clear();
 
             Username = "";
@@ -99,5 +99,133 @@ namespace Login.Pages
             return RedirectToPage("/LogIn");
         }
 
+        // DELETE USER BY ID - ADMIN ONLY
+        public async Task<IActionResult> OnPostDeleteUserByIdAsync(int id)
+        {
+            if (!CurrentUserIsAdmin())
+            {
+                return RedirectToPage("/Index");
+            }
+
+            var userToDelete = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (userToDelete == null)
+            {
+                return NotFound();
+            }
+
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
+        }
+
+        // DELETE USER BY USERNAME - ADMIN ONLY
+        public async Task<IActionResult> OnPostDeleteUserByUsernameAsync(string username)
+        {
+            if (!CurrentUserIsAdmin())
+            {
+                return RedirectToPage("/Index");
+            }
+
+            var userToDelete = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+            if (userToDelete == null)
+            {
+                return NotFound();
+            }
+
+            _context.Users.Remove(userToDelete);
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
+        }
+
+        // UPDATE USER BY ID - ADMIN ONLY
+        public async Task<IActionResult> OnPostUpdateUserByIdAsync(int id)
+        {
+            if (!CurrentUserIsAdmin())
+            {
+                return RedirectToPage("/Index");
+            }
+
+            var userToUpdate = await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            if (userToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            userToUpdate.Username = EditUser.Username;
+            userToUpdate.DisplayName = EditUser.DisplayName;
+            userToUpdate.Email = EditUser.Email;
+            userToUpdate.IsAdmin = EditUser.IsAdmin;
+
+            if (!string.IsNullOrWhiteSpace(NewPassword))
+            {
+                var hasher = new PasswordHasher<User>();
+                userToUpdate.PasswordHash = hasher.HashPassword(userToUpdate, NewPassword);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
+        }
+
+        // UPDATE USER BY USERNAME - ADMIN ONLY
+        public async Task<IActionResult> OnPostUpdateUserByUsernameAsync(string oldUsername)
+        {
+            if (!CurrentUserIsAdmin())
+            {
+                return RedirectToPage("/Index");
+            }
+
+            var userToUpdate = await _context.Users.FirstOrDefaultAsync(u => u.Username == oldUsername);
+
+            if (userToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            userToUpdate.Username = EditUser.Username;
+            userToUpdate.DisplayName = EditUser.DisplayName;
+            userToUpdate.Email = EditUser.Email;
+            userToUpdate.IsAdmin = EditUser.IsAdmin;
+
+            if (!string.IsNullOrWhiteSpace(NewPassword))
+            {
+                var hasher = new PasswordHasher<User>();
+                userToUpdate.PasswordHash = hasher.HashPassword(userToUpdate, NewPassword);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage();
+        }
+
+        private void LoadUsers()
+        {
+            UserList = _context.Users.ToList();
+        }
+
+
+        private bool CurrentUserIsAdmin()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId == null)
+            {
+                return false;
+            }
+
+            var user = _context.Users.FirstOrDefault(u => u.Id == userId.Value);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            return user.IsAdmin;
+        }
     }
 }
