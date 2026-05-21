@@ -4,6 +4,7 @@ using EksamenRazorPage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EksamenRazorPage.Migrations
 {
     [DbContext(typeof(PokemonContext))]
-    partial class PokemonContextModelSnapshot : ModelSnapshot
+    [Migration("20260513112357_AddTeamsAndMembers")]
+    partial class AddTeamsAndMembers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,9 +38,6 @@ namespace EksamenRazorPage.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EventType")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
@@ -98,6 +98,9 @@ namespace EksamenRazorPage.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PokemonId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Power")
                         .HasColumnType("int");
 
@@ -113,6 +116,8 @@ namespace EksamenRazorPage.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PokemonId");
+
                     b.ToTable("Moves");
                 });
 
@@ -124,31 +129,9 @@ namespace EksamenRazorPage.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Attack")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
-
-                    b.Property<int>("HP")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SpAtk")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SpDef")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Speed")
-                        .HasColumnType("int");
 
                     b.Property<string>("Type1")
                         .IsRequired()
@@ -240,21 +223,6 @@ namespace EksamenRazorPage.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MovePokemon", b =>
-                {
-                    b.Property<int>("MovepoolId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PokemonCanLearnId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MovepoolId", "PokemonCanLearnId");
-
-                    b.HasIndex("PokemonCanLearnId");
-
-                    b.ToTable("MovePokemon");
-                });
-
             modelBuilder.Entity("EksamenRazorPage.Models.Favorite", b =>
                 {
                     b.HasOne("EksamenRazorPage.Models.Pokemon", "Pokemon")
@@ -272,6 +240,13 @@ namespace EksamenRazorPage.Migrations
                     b.Navigation("Pokemon");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("EksamenRazorPage.Models.Move", b =>
+                {
+                    b.HasOne("EksamenRazorPage.Models.Pokemon", null)
+                        .WithMany("Movepool")
+                        .HasForeignKey("PokemonId");
                 });
 
             modelBuilder.Entity("EksamenRazorPage.Models.Team", b =>
@@ -304,19 +279,9 @@ namespace EksamenRazorPage.Migrations
                     b.Navigation("Team");
                 });
 
-            modelBuilder.Entity("MovePokemon", b =>
+            modelBuilder.Entity("EksamenRazorPage.Models.Pokemon", b =>
                 {
-                    b.HasOne("EksamenRazorPage.Models.Move", null)
-                        .WithMany()
-                        .HasForeignKey("MovepoolId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EksamenRazorPage.Models.Pokemon", null)
-                        .WithMany()
-                        .HasForeignKey("PokemonCanLearnId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Movepool");
                 });
 
             modelBuilder.Entity("EksamenRazorPage.Models.Team", b =>

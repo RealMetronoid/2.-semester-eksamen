@@ -29,3 +29,126 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+/* Navbar */
+.pokemon-navbar {
+    background-color: #b71c1c;
+    border-bottom: 3px solid #7f0000;
+}
+
+    .pokemon-navbar .navbar-brand,
+    .pokemon-navbar .nav-link {
+        color: rgba(255,255,255,0.85) !important;
+    }
+
+        .pokemon-navbar .nav-link:hover {
+            color: #fff !important;
+            background: rgba(0,0,0,0.2);
+            border-radius: 4px;
+        }
+
+/* Pokemon */
+.pokemons {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    padding: 3rem 1rem;
+}
+
+/* Pokemon kort */
+.pokemon-card {
+    border: 1px solid #dee2e6;
+    transition: border-color 0.15s;
+    cursor: pointer;
+}
+
+    .pokemon-card:hover {
+        border-color: #b71c1c;
+    }
+
+.pokemon-icon {
+    font-size: 2rem;
+}
+
+/* Type badges */
+.type-badge-fire {
+    background-color: #993C1D;
+}
+
+.type-badge-water {
+    background-color: #185FA5;
+}
+
+.type-badge-grass {
+    background-color: #3B6D11;
+}
+
+.type-badge-electric {
+    background-color: #854F0B;
+}
+
+.type-badge-psychic {
+    background-color: #993556;
+}
+
+.type-badge-normal {
+    background-color: #5F5E5A;
+}
+
+.type-badge-poison {
+    background-color: #534AB7;
+}
+
+.type-badge-dragon {
+    background-color: #0C447C;
+}
+/* Mørk baggrund */
+body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+/* Navbar tilpasning */
+.container {
+    background-color: transparent;
+}
+
+/* De tre infobokse + pokemon kort */
+.card {
+    background-color: #2d2d2d;
+    border-color: #3d3d3d;
+    color: #e0e0e0;
+}
+
+.card .text-muted {
+    color: #aaaaaa !important;
+}
+
+/* Hero/søge sektion */
+.pokemons {
+    background-color: #2d2d2d;
+}
+
+/* Input felt */
+.form-control {
+    background-color: #3d3d3d;
+    border-color: #555;
+    color: #e0e0e0;
+}
+
+.form-control::placeholder {
+    color: #888;
+}
+
+.form-control:focus {
+    background-color: #3d3d3d;
+    border-color: #b71c1c;
+    color: #e0e0e0;
+    box-shadow: 0 0 0 0.2rem rgba(183,28,28,0.25);
+}
+
+/* Footer */
+.footer {
+    background-color: #1a1a1a;
+    border-color: #3d3d3d !important;
+    color: #888 !important;
+}

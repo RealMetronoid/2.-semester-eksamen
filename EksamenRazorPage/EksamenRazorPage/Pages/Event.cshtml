@@ -1,0 +1,305 @@
+﻿@page
+@model EksamenRazorPage.Pages.EventModel
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<link rel="stylesheet" href="~/css/event.css" />
+
+<section class="events-page">
+    <header class="events-header">
+        <div>
+            <h1>Events</h1>
+            <p>Kommende turneringer og distributioner</p>
+        </div>
+
+        @* Only visible for admins *@
+        @if (Model.IsAdmin)
+        {
+            <button type="button" class="admin-manage-btn" onclick="openEventPopup()">
+                Manage Events
+            </button>
+        }
+    </header>
+
+    <div class="events-panel">
+
+        <div class="events-filter-row">
+            <details class="filter-dropdown">
+                <summary class="filter-summary">
+                    <span>Filter events</span>
+                    <span class="filter-current">
+                        @(string.IsNullOrWhiteSpace(Model.SelectedEventType) || Model.SelectedEventType == "Alle"
+                            ? "Alle"
+                            : Model.SelectedEventType)
+                    </span>
+                </summary>
+
+                <form method="get" class="filter-options">
+                    <button type="submit"
+                            name="SelectedEventType"
+                            value="Alle"
+                            class="filter-option @(string.IsNullOrWhiteSpace(Model.SelectedEventType) || Model.SelectedEventType == "Alle" ? "selected" : "")">
+                        Alle
+                    </button>
+
+                    <button type="submit"
+                            name="SelectedEventType"
+                            value="Pokemon GO"
+                            class="filter-option @(Model.SelectedEventType == "Pokemon GO" ? "selected" : "")">
+                        Pokémon GO
+                    </button>
+
+                    <button type="submit"
+                            name="SelectedEventType"
+                            value="Tournament"
+                            class="filter-option @(Model.SelectedEventType == "Tournament" ? "selected" : "")">
+                        Tournament
+                    </button>
+
+                    <button type="submit"
+                            name="SelectedEventType"
+                            value="Online TCG"
+                            class="filter-option @(Model.SelectedEventType == "Online TCG" ? "selected" : "")">
+                        Online TCG
+                    </button>
+
+                    <button type="submit"
+                            name="SelectedEventType"
+                            value="Distribution"
+                            class="filter-option @(Model.SelectedEventType == "Distribution" ? "selected" : "")">
+                        Distribution
+                    </button>
+                </form>
+            </details>
+        </div>
+
+        @if (Model.Events != null && Model.Events.Any())
+        {
+            <div class="events-list">
+                @foreach (var eventItem in Model.Events)
+                {
+                    <article class="event-box @(eventItem.IsActive ? "event-active" : "event-ended")">
+
+                        <div class="event-content">
+                            <h2 class="event-title">
+                                @eventItem.Name
+                            </h2>
+
+                            @if (!string.IsNullOrWhiteSpace(eventItem.EventType))
+                            {
+                                <span class="event-type">
+                                    @eventItem.EventType
+                                </span>
+                            }
+
+                            <p class="event-meta">
+                                <span class="event-description">
+                                    @eventItem.Description
+                                </span>
+
+                                <span class="event-separator">—</span>
+
+                                <span class="event-date">
+                                    @eventItem.Date.ToString("d. MMMM yyyy")
+                                </span>
+                            </p>
+
+                            @if (eventItem.IsActive)
+                            {
+                                <span class="event-status active">
+                                    Aktiv
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="event-status ended">
+                                    Afsluttet
+                                </span>
+                            }
+                        </div>
+
+                        <div class="event-action">
+                            @if (!string.IsNullOrWhiteSpace(eventItem.Url))
+                            {
+                                <a href="@eventItem.Url"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="event-link">
+                                    Åbn ↗
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="event-link disabled">
+                                    Åbn ↗
+                                </span>
+                            }
+                        </div>
+
+                    </article>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-events">
+                <h2>Ingen events</h2>
+                <p>Der er ingen kommende events lige nu.</p>
+            </div>
+        }
+
+    </div>
+</section>
+
+@if (Model.IsAdmin)
+{
+    <div id="eventPopup" class="event-popup-overlay">
+        <div class="event-popup">
+            <div class="event-popup-header">
+                <h2>Manage Events</h2>
+
+                <button type="button" class="popup-close-btn" onclick="closeEventPopup()">
+                    ×
+                </button>
+            </div>
+
+            <div class="event-admin-tabs">
+                <button type="button" class="admin-tab active" onclick="showAdminForm('create', this)">
+                    Create
+                </button>
+
+                <button type="button" class="admin-tab" onclick="showAdminForm('update', this)">
+                    Update
+                </button>
+
+                <button type="button" class="admin-tab" onclick="showAdminForm('delete', this)">
+                    Delete
+                </button>
+            </div>
+
+            <!-- CREATE -->
+            <form method="post" asp-page-handler="Create" id="createForm" class="admin-form active">
+                <h3>Create Event</h3>
+
+                <label>Name</label>
+                <input asp-for="NewEvent.Name" />
+
+                <label>Description</label>
+                <textarea asp-for="NewEvent.Description"></textarea>
+
+                <label>Date</label>
+                <input asp-for="NewEvent.Date" type="date" />
+
+                <label>Url</label>
+                <input asp-for="NewEvent.Url" />
+
+                <label>Event Type</label>
+                <select asp-for="NewEvent.EventType">
+                    <option value="">No type</option>
+                    <option value="Pokemon GO">Pokemon GO</option>
+                    <option value="Tournament">Tournament</option>
+                    <option value="Online TCG">Online TCG</option>
+                    <option value="Distribution">Distribution</option>
+                </select>
+
+                <label class="checkbox-label">
+                    <input asp-for="NewEvent.IsActive" />
+                    Active
+                </label>
+
+                <button type="submit" class="admin-submit-btn">
+                    Create Event
+                </button>
+            </form>
+
+            <!-- UPDATE -->
+            <form method="post" asp-page-handler="Update" id="updateForm" class="admin-form">
+                <h3>Update Event</h3>
+
+                <label>Event to update</label>
+                <select asp-for="EditEvent.Id">
+                    @foreach (var eventItem in Model.AllEvents)
+                    {
+                        <option value="@eventItem.Id">
+                            @eventItem.Id - @eventItem.Name
+                        </option>
+                    }
+                </select>
+
+                <label>New Name</label>
+                <input asp-for="EditEvent.Name" />
+
+                <label>New Description</label>
+                <textarea asp-for="EditEvent.Description"></textarea>
+
+                <label>New Date</label>
+                <input asp-for="EditEvent.Date" type="date" />
+
+                <label>New Url</label>
+                <input asp-for="EditEvent.Url" />
+
+                <label>New Event Type</label>
+                <select asp-for="EditEvent.EventType">
+                    <option value="">No type</option>
+                    <option value="Pokemon GO">Pokemon GO</option>
+                    <option value="Tournament">Tournament</option>
+                    <option value="Online TCG">Online TCG</option>
+                    <option value="Distribution">Distribution</option>
+                </select>
+
+                <label class="checkbox-label">
+                    <input asp-for="EditEvent.IsActive" />
+                    Active
+                </label>
+
+                <button type="submit" class="admin-submit-btn">
+                    Update Event
+                </button>
+            </form>
+
+            <!-- DELETE -->
+            <form method="post" asp-page-handler="Delete" id="deleteForm" class="admin-form">
+                <h3>Delete Event</h3>
+
+                <label>Event to delete</label>
+                <select name="DeleteEventId">
+                    @foreach (var eventItem in Model.AllEvents)
+                    {
+                        <option value="@eventItem.Id">
+                            @eventItem.Id - @eventItem.Name
+                        </option>
+                    }
+                </select>
+
+                <button type="submit" class="admin-delete-btn">
+                    Delete Event
+                </button>
+            </form>
+        </div>
+    </div>
+}
+
+<script>
+    function openEventPopup() {
+        document.getElementById("eventPopup").classList.add("show");
+    }
+
+    function closeEventPopup() {
+        document.getElementById("eventPopup").classList.remove("show");
+    }
+
+    function showAdminForm(formName, button) {
+        document.querySelectorAll(".admin-form").forEach(form => {
+            form.classList.remove("active");
+        });
+
+        document.querySelectorAll(".admin-tab").forEach(tab => {
+            tab.classList.remove("active");
+        });
+
+        document.getElementById(formName + "Form").classList.add("active");
+        button.classList.add("active");
+    }
+</script>

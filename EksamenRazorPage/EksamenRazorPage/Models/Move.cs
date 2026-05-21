@@ -1,7 +1,10 @@
 ﻿namespace EksamenRazorPage.Models
 {
+
+
     public class Move
     {
+        public Move() { }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
@@ -10,6 +13,7 @@
         public string Category { get; set; }
         public string Effect { get; set; }
         public string? SecondaryEffect { get; set; }
+        public List<Pokemon> PokemonCanLearn { get; set; } = [];
 
         public Move(int id, string name, string type, int powerPoints, int power, string category, string effect, string? secondaryEffect)
         {
@@ -22,5 +26,6 @@
             Effect = effect;
             SecondaryEffect = secondaryEffect;
         }
+        
     }
 }

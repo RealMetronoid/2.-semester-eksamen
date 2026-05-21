@@ -6,28 +6,54 @@
         public string Name { get; set; }
         public string Type1 { get; set; }
         public string? Type2 { get; set; }
-        public List<Move> Movepool { get; set; }
+
+        public int HP { get; set; }
+        public int Attack { get; set; }
+        public int Defense { get; set; }
+        public int SpAtk { get; set; }
+        public int SpDef { get; set; }
+        public int Speed { get; set; }
+
+        public string ImageUrl { get; set; }
+        public List<Move> Movepool { get; set; } = [];
         //public Pokemon? PreEvolution { get; set; }
         //public Pokemon? Evolution { get; set; }
 
-        public Pokemon(int id, string name, string type1)
+        //  SKAL HAVDE TOM CONSTRUCTOR FORDI EN IDIOT DESIGNED FRAMEWORKET!!
+        public Pokemon() {}
+
+        public Pokemon(int id, string name, string type1, int hp, int attack, int defense, int spAtk, int spDef, int speed, string imageUrl)
         {
             Id = id;
             Name = name;
             Type1 = type1;
             Type2 = null;
             Movepool = new List<Move>();
+            HP = hp;
+            Attack = attack;
+            Defense = defense;
+            SpAtk = spAtk;
+            SpDef = spDef;
+            Speed = speed;
+            ImageUrl = imageUrl;
             //PreEvolution = null;
             //Evolution = null;
         }
 
-        public Pokemon(int id, string name, string type1, string type2)
+        public Pokemon(int id, string name, string type1, string type2, int hp, int attack, int defense, int spAtk, int spDef, int speed, string imageUrl)
         {
             Id = id;
             Name = name;
             Type1 = type1;
             Type2 = type2;
             Movepool = new List<Move>();
+            HP = hp;
+            Attack = attack;
+            Defense = defense;
+            SpAtk = spAtk;
+            SpDef = spDef;
+            Speed = speed;
+            ImageUrl = imageUrl;
             //PreEvolution = null;
             //Evolution = null;
         }
@@ -113,7 +139,5 @@
 
 
         #endregion
-
-
     }
 }

@@ -1,0 +1,8 @@
+﻿
+/*Used when confirming password*/
+.validation {
+    color: #b30000;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+}
