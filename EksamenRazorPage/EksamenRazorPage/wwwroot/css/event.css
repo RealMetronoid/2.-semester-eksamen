@@ -304,3 +304,226 @@ body {
         justify-content: flex-start;
     }
 }
+
+
+/* Admin manage button */
+.events-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+}
+
+.admin-manage-btn {
+    padding: 12px 18px;
+    border: 1px solid #5a5a5a;
+    border-radius: 6px;
+    background: #292929;
+    color: #eeeeee;
+    font-size: 0.95rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+    .admin-manage-btn:hover {
+        background: #343434;
+        border-color: #777;
+    }
+
+/* Popup background */
+.event-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 32px;
+}
+
+    /* Show popup */
+    .event-popup-overlay.show {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+/* Popup box */
+.event-popup {
+    width: min(760px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #202020;
+    border: 1px solid #555;
+    border-radius: 8px;
+    color: #eeeeee;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Popup top */
+.event-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    border-bottom: 1px solid #444;
+    background: #292929;
+}
+
+    .event-popup-header h2 {
+        margin: 0;
+        font-size: 1.4rem;
+        font-weight: 900;
+    }
+
+.popup-close-btn {
+    border: none;
+    background: transparent;
+    color: #eeeeee;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* | Create | Update | Delete | */
+.event-admin-tabs {
+    display: flex;
+    gap: 0;
+    padding: 16px 22px;
+    border-bottom: 1px solid #444;
+    background: #202020;
+}
+
+.admin-tab {
+    padding: 10px 18px;
+    border: 1px solid #555;
+    border-right: none;
+    background: #292929;
+    color: #eeeeee;
+    font-size: 0.95rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+    .admin-tab:first-child {
+        border-radius: 6px 0 0 6px;
+    }
+
+    .admin-tab:last-child {
+        border-right: 1px solid #555;
+        border-radius: 0 6px 6px 0;
+    }
+
+    .admin-tab.active {
+        background: #e8f3df;
+        color: #1f3a19;
+        border-color: #e8f3df;
+    }
+
+/* Forms */
+.admin-form {
+    display: none;
+    padding: 22px;
+}
+
+    .admin-form.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .admin-form h3 {
+        margin: 0 0 18px;
+        font-size: 1.2rem;
+        font-weight: 900;
+    }
+
+    .admin-form label {
+        margin: 12px 0 6px;
+        color: #d0d0d0;
+        font-weight: 800;
+    }
+
+    .admin-form input,
+    .admin-form textarea,
+    .admin-form select {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #555;
+        border-radius: 5px;
+        background: #303030;
+        color: #eeeeee;
+        font-size: 1rem;
+    }
+
+    .admin-form textarea {
+        min-height: 90px;
+        resize: vertical;
+    }
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+    .checkbox-label input {
+        width: auto;
+    }
+
+.admin-submit-btn,
+.admin-delete-btn {
+    margin-top: 20px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.admin-submit-btn {
+    background: #e8f3df;
+    color: #1f3a19;
+}
+
+    .admin-submit-btn:hover {
+        background: #d7ebca;
+    }
+
+.admin-delete-btn {
+    background: #ff3b30;
+    color: white;
+}
+
+    .admin-delete-btn:hover {
+        background: #d93027;
+    }
+
+@media (max-width: 650px) {
+    .events-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .event-popup-overlay {
+        padding: 12px;
+    }
+
+    .event-admin-tabs {
+        flex-direction: column;
+    }
+
+    .admin-tab,
+    .admin-tab:first-child,
+    .admin-tab:last-child {
+        border: 1px solid #555;
+        border-radius: 0;
+    }
+
+        .admin-tab:first-child {
+            border-radius: 6px 6px 0 0;
+        }
+
+        .admin-tab:last-child {
+            border-radius: 0 0 6px 6px;
+        }
+}
