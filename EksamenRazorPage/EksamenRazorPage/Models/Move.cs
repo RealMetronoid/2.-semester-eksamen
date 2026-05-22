@@ -13,6 +13,7 @@
         public string Category { get; set; }
         public string Effect { get; set; }
         public string? SecondaryEffect { get; set; }
+        public List<Pokemon> PokemonCanLearn { get; set; } = [];
 
         public Move(int id, string name, string type, int powerPoints, int power, string category, string effect, string? secondaryEffect)
         {
