@@ -16,6 +16,10 @@ namespace EksamenRazorPage.Pages
 
         public List<Event> Events { get; set; } = new();
 
+        public List<Event> AllEvents { get; set; } = new();
+
+        public bool IsAdmin { get; set; }
+
         [BindProperty]
         public Event NewEvent { get; set; } = new();
 
@@ -27,6 +31,7 @@ namespace EksamenRazorPage.Pages
 
         public void OnGet()
         {
+            IsAdmin = CurrentUserIsAdmin();
             LoadEvents();
         }
 
@@ -40,6 +45,7 @@ namespace EksamenRazorPage.Pages
 
             if (!ModelState.IsValid)
             {
+                IsAdmin = CurrentUserIsAdmin();
                 LoadEvents();
                 return Page();
             }
@@ -60,9 +66,20 @@ namespace EksamenRazorPage.Pages
                 return RedirectToPage("/Index");
             }
 
-            if (!ModelState.IsValid)
+            if (EditEvent.Id <= 0)
             {
                 LoadEvents();
+                IsAdmin = CurrentUserIsAdmin();
+                ModelState.AddModelError("", "No event was selected.");
+                return Page();
+            }
+
+            if (string.IsNullOrWhiteSpace(EditEvent.Name) ||
+                string.IsNullOrWhiteSpace(EditEvent.Description))
+            {
+                LoadEvents();
+                IsAdmin = CurrentUserIsAdmin();
+                ModelState.AddModelError("", "Name and description are required.");
                 return Page();
             }
 
@@ -78,11 +95,13 @@ namespace EksamenRazorPage.Pages
             existingEvent.Date = EditEvent.Date;
             existingEvent.Url = EditEvent.Url;
             existingEvent.EventType = EditEvent.EventType;
-            existingEvent.IsActive = EditEvent.IsActive;
+
+            // Keep it active after update
+            existingEvent.IsActive = true;
 
             _context.SaveChanges();
 
-            return RedirectToPage();
+            return RedirectToPage("/Event");
         }
 
         // DELETE EVENT - ADMIN ONLY
@@ -100,11 +119,7 @@ namespace EksamenRazorPage.Pages
                 return NotFound();
             }
 
-            // Soft delete recommended because you already use IsActive
             eventToDelete.IsActive = false;
-
-            // If you want permanent delete instead, use this:
-            // _context.Events.Remove(eventToDelete);
 
             _context.SaveChanges();
 
@@ -124,6 +139,10 @@ namespace EksamenRazorPage.Pages
             }
 
             Events = query
+                .OrderBy(e => e.Date)
+                .ToList();
+
+            AllEvents = _context.Events
                 .OrderBy(e => e.Date)
                 .ToList();
         }
