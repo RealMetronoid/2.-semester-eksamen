@@ -18,6 +18,7 @@ namespace EksamenRazorPage.Pages
 
         public List<Event> AllEvents { get; set; } = new();
 
+
         public bool IsAdmin { get; set; }
 
         [BindProperty]
@@ -35,7 +36,7 @@ namespace EksamenRazorPage.Pages
             LoadEvents();
         }
 
-        // CREATE EVENT - ADMIN ONLY
+        // CREATE EVENT
         public IActionResult OnPostAddEvent()
         {
             if (!CurrentUserIsAdmin())
@@ -43,22 +44,24 @@ namespace EksamenRazorPage.Pages
                 return RedirectToPage("/Index");
             }
 
-            if (!ModelState.IsValid)
+            if (string.IsNullOrWhiteSpace(NewEvent.Name) || string.IsNullOrWhiteSpace(NewEvent.Description))
             {
                 IsAdmin = CurrentUserIsAdmin();
                 LoadEvents();
+                ModelState.AddModelError("", "Name and description are required.");
                 return Page();
             }
 
+            NewEvent.Id = 0;
             NewEvent.IsActive = true;
 
             _context.Events.Add(NewEvent);
             _context.SaveChanges();
 
-            return RedirectToPage();
+            return RedirectToPage("/Event");
         }
 
-        // UPDATE EVENT - ADMIN ONLY
+        // UPDATE EVENT
         public IActionResult OnPostUpdateEvent()
         {
             if (!CurrentUserIsAdmin())
@@ -74,8 +77,7 @@ namespace EksamenRazorPage.Pages
                 return Page();
             }
 
-            if (string.IsNullOrWhiteSpace(EditEvent.Name) ||
-                string.IsNullOrWhiteSpace(EditEvent.Description))
+            if (string.IsNullOrWhiteSpace(EditEvent.Name) || string.IsNullOrWhiteSpace(EditEvent.Description))
             {
                 LoadEvents();
                 IsAdmin = CurrentUserIsAdmin();
@@ -104,7 +106,7 @@ namespace EksamenRazorPage.Pages
             return RedirectToPage("/Event");
         }
 
-        // DELETE EVENT - ADMIN ONLY
+        // DELETE EVENT
         public IActionResult OnPostDeleteEvent(int id)
         {
             if (!CurrentUserIsAdmin())
@@ -119,7 +121,28 @@ namespace EksamenRazorPage.Pages
                 return NotFound();
             }
 
-            eventToDelete.IsActive = false;
+            _context.Events.Remove(eventToDelete);
+            _context.SaveChanges();
+
+            return RedirectToPage();
+        }
+
+        // InActive EVENT
+        public IActionResult OnPostInactiveEvent(int id)
+        {
+            if (!CurrentUserIsAdmin())
+            {
+                return RedirectToPage("/Index");
+            }
+
+            var eventToInactive = _context.Events.FirstOrDefault(e => e.Id == id);
+
+            if (eventToInactive == null)
+            {
+                return NotFound();
+            }
+
+            eventToInactive.IsActive = false;
 
             _context.SaveChanges();
 
@@ -132,19 +155,14 @@ namespace EksamenRazorPage.Pages
                 .Where(e => e.IsActive)
                 .AsQueryable();
 
-            if (!string.IsNullOrWhiteSpace(SelectedEventType) &&
-                SelectedEventType != "Alle")
+            if (!string.IsNullOrWhiteSpace(SelectedEventType) && SelectedEventType != "Alle")
             {
                 query = query.Where(e => e.EventType == SelectedEventType);
             }
 
-            Events = query
-                .OrderBy(e => e.Date)
-                .ToList();
+            Events = query.OrderBy(e => e.Date).ToList();
 
-            AllEvents = _context.Events
-                .OrderBy(e => e.Date)
-                .ToList();
+            AllEvents = _context.Events.OrderBy(e => e.Date).ToList();
         }
 
         private bool CurrentUserIsAdmin()

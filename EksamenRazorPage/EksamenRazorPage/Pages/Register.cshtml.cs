@@ -62,9 +62,9 @@ namespace Login.Pages
                 return Page();
             }
 
-            var existingUser = _context.Users.FirstOrDefault(p => p.Username == Username);
+            var existingUsername = _context.Users.FirstOrDefault(p => p.Username == Username);
 
-            if (existingUser != null)
+            if (existingUsername != null)
             {
                 ModelState.AddModelError("", "Username already exists.");
                 LoadUsers();
@@ -88,18 +88,10 @@ namespace Login.Pages
 
             ModelState.Clear();
 
-            Username = "";
-            DisplayName = "";
-            Email = "";
-            Password = "";
-            ConfirmPassword = "";
-
-            ViewData["Message"] = "Registration successful!";
-
             return RedirectToPage("/LogIn");
         }
 
-        // DELETE USER BY ID - ADMIN ONLY
+        // DELETE USER BY ID
         public async Task<IActionResult> OnPostDeleteUserByIdAsync(int id)
         {
             if (!CurrentUserIsAdmin())
@@ -120,7 +112,7 @@ namespace Login.Pages
             return RedirectToPage();
         }
 
-        // DELETE USER BY USERNAME - ADMIN ONLY
+        // DELETE USER BY USERNAME
         public async Task<IActionResult> OnPostDeleteUserByUsernameAsync(string username)
         {
             if (!CurrentUserIsAdmin())
@@ -141,7 +133,7 @@ namespace Login.Pages
             return RedirectToPage();
         }
 
-        // UPDATE USER BY ID - ADMIN ONLY
+        // UPDATE USER BY ID
         public async Task<IActionResult> OnPostUpdateUserByIdAsync(int id)
         {
             if (!CurrentUserIsAdmin())
@@ -172,7 +164,7 @@ namespace Login.Pages
             return RedirectToPage();
         }
 
-        // UPDATE USER BY USERNAME - ADMIN ONLY
+        // UPDATE USER BY USERNAME
         public async Task<IActionResult> OnPostUpdateUserByUsernameAsync(string oldUsername)
         {
             if (!CurrentUserIsAdmin())
@@ -187,6 +179,7 @@ namespace Login.Pages
                 return NotFound();
             }
 
+ 
             userToUpdate.Username = EditUser.Username;
             userToUpdate.DisplayName = EditUser.DisplayName;
             userToUpdate.Email = EditUser.Email;
@@ -202,6 +195,7 @@ namespace Login.Pages
 
             return RedirectToPage();
         }
+
 
         private void LoadUsers()
         {

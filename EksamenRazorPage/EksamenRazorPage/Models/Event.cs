@@ -1,4 +1,4 @@
-﻿namespace EksamenRazorPage.Models
+﻿    namespace EksamenRazorPage.Models
 {
     public class Event
     {
