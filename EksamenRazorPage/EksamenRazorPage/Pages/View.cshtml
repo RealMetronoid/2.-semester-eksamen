@@ -4,6 +4,8 @@
     ViewData["Title"] = "View";
 }
 
+<link rel="stylesheet" href="~/css/view.css"/>
+
 <h1>@Model.SelectedPokemon.Name</h1>
 
 <div class="row">
@@ -20,16 +22,7 @@
                     <th>HP</th>
                     <td>@Model.SelectedPokemon.HP</td>
                     <td>
-                        <!-- Aria values is used to support older browsers. Will add more info in report. -->
-                        <div class="progress">
-                            <div class="progress-bar"
-                                 role="progressbar"
-                                 aria-valuenow="@Model.SelectedPokemon.HP"
-                                 aria-valuemin="0"
-                                 aria-valuemax="255"
-                                 style="width:@Model.SelectedPokemon.HP%">
-                            </div>
-                        </div>
+                        <progress class="progressbar" max="180" value="@Model.SelectedPokemon.HP"></progress>
                     </td>
                 </tr>
                 <!-- Attack Stat -->
@@ -37,15 +30,7 @@
                     <th>Attack</th>
                     <td>@Model.SelectedPokemon.Attack</td>
                     <td>
-                        <div class="progress">
-                            <div class="progress-bar"
-                                 role="progressbar"
-                                 aria-valuenow="@Model.SelectedPokemon.Attack"
-                                 aria-valuemin="0"
-                                 aria-valuemax="255"
-                                 style="width:@Model.SelectedPokemon.Attack%">
-                            </div>
-                        </div>
+                        <progress class="progressbar" max="180" value="@Model.SelectedPokemon.Attack"></progress>
                     </td>
                 </tr>
                 <!-- Defense Stat -->
@@ -53,15 +38,7 @@
                     <th>Defense</th>
                     <td>@Model.SelectedPokemon.Defense</td>
                     <td>
-                        <div class="progress">
-                            <div class="progress-bar"
-                                 role="progressbar"
-                                 aria-valuenow="@Model.SelectedPokemon.Defense"
-                                 aria-valuemin="0"
-                                 aria-valuemax="255"
-                                 style="width:@Model.SelectedPokemon.Defense%">
-                            </div>
-                        </div>
+                        <progress class="progressbar" max="180" value="@Model.SelectedPokemon.Defense"></progress>
                     </td>
                 </tr>
                 <!-- Sp. Attack -->
@@ -69,15 +46,7 @@
                     <th>Sp. Attack</th>
                     <td>@Model.SelectedPokemon.SpAtk</td>
                     <td>
-                        <div class="progress">
-                            <div class="progress-bar"
-                                 role="progressbar"
-                                 aria-valuenow="@Model.SelectedPokemon.SpAtk"
-                                 aria-valuemin="0"
-                                 aria-valuemax="255"
-                                 style="width:@Model.SelectedPokemon.SpAtk%">
-                            </div>
-                        </div>
+                        <progress class="progressbar" max="180" value="@Model.SelectedPokemon.SpAtk"></progress>
                     </td>
                 </tr>
                 <!-- Sp. Defense -->
@@ -85,15 +54,7 @@
                     <th>Sp. Defense</th>
                     <td>@Model.SelectedPokemon.SpDef</td>
                     <td>
-                        <div class="progress">
-                            <div class="progress-bar"
-                                 role="progressbar"
-                                 aria-valuenow="@Model.SelectedPokemon.SpDef"
-                                 aria-valuemin="0"
-                                 aria-valuemax="255"
-                                 style="width:@Model.SelectedPokemon.SpDef%">
-                            </div>
-                        </div>
+                        <progress class="progressbar" max="180" value="@Model.SelectedPokemon.SpDef"></progress>
                     </td>
                 </tr>
                 <!-- Speed -->
@@ -101,15 +62,7 @@
                     <th>Speed</th>
                     <td>@Model.SelectedPokemon.Speed</td>
                     <td>
-                        <div class="progress">
-                            <div class="progress-bar"
-                                 role="progressbar"
-                                 aria-valuenow="@Model.SelectedPokemon.Speed"
-                                 aria-valuemin="0"
-                                 aria-valuemax="255"
-                                 style="width:@Model.SelectedPokemon.Speed%">
-                            </div>
-                        </div>
+                        <progress class="progressbar" max="180" value="@Model.SelectedPokemon.Speed"></progress>
                     </td>
                 </tr>
             </tbody>
