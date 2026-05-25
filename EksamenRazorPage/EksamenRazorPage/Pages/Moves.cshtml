@@ -8,10 +8,10 @@
 
 <div class="d-flex gap-2 mb-3">
     <input type="text" id="search" class="form-control"
-           placeholder="Søg på move-navn..." onkeyup="filterMoves()">
+           placeholder="Search for move name..." onkeyup="filterMoves()">
 
     <select id="typeFilter" class="form-control" onchange="filterMoves()">
-        <option value="">Alle typer</option>
+        <option value="">All types</option>
         <option>Fire</option>
         <option>Water</option>
         <option>Grass</option>
@@ -33,7 +33,7 @@
     </select>
 
     <select id="categoryFilter" class="form-control" onchange="filterMoves()">
-        <option value="">Alle kategorier</option>
+        <option value="">All categories</option>
         <option>Physical</option>
         <option>Special</option>
         <option>Status</option>
@@ -45,12 +45,12 @@
         <table class="table table-dark table-hover mb-0" id="movesTable">
             <thead>
                 <tr>
-                    <th>Navn</th>
+                    <th>Name</th>
                     <th>Type</th>
-                    <th>Kategori</th>
+                    <th>Category</th>
                     <th>Power</th>
                     <th>PP</th>
-                    <th>Effekt</th>
+                    <th>Effect</th>
                 </tr>
             </thead>
             <tbody>

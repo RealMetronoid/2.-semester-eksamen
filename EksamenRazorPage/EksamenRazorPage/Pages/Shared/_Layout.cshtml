@@ -22,9 +22,6 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Index">Forside</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-page="/Pokemon">Pokemon</a>
                         </li>
                         <li class="nav-item">
@@ -34,10 +31,10 @@
                             <a class="nav-link" asp-area="" asp-page="/Event">Events</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-page="/Team">Hold</a>
+                            <a class="nav-link" asp-area="" asp-page="/Team">Team</a>
                         </li>
                     </ul>
-                    <!-- Højre side: Login -->
+                    <!-- Right side: Login -->
                     <ul class="navbar-nav">
                         @if (Context.Session.GetString("Username") != null)
                         {
@@ -45,13 +42,13 @@
                                 <span class="nav-link text-white">@Context.Session.GetString("Username")</span>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-page="/LogOut">Log ud</a>
+                                <a class="nav-link" asp-page="/LogOut">Log Out</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-page="/LogIn">Log ind</a>
+                                <a class="nav-link" asp-page="/LogIn">Log In</a>
                             </li>
                         }
                     </ul>

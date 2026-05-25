@@ -33,25 +33,21 @@ namespace Login.Pages
         public async Task OnGetAsync()
         {
 
-
-            // Check if user already exists
-            if (!_context.Users.Any(u => u.Username == "Marcus"))
+            if (!_context.Users.Any(u => u.Username == "Deafult Admin"))
             {
                 var hasher = new PasswordHasher<User>();
 
-                var testUser = new User
+                var defaultAdmin = new User
                 {
-                    Username = "Marcus",
-                    DisplayName = "Marc3935",
-                    Email = "a@gmail.com",
+                    Username = "Admin",
+                    DisplayName = "Admin1",
+                    Email = "admin@email.com",
                     IsAdmin = true
                 };
 
-                // Hash password "abc"
-                testUser.PasswordHash =
-                    hasher.HashPassword(testUser, "abc");
+                defaultAdmin.PasswordHash = hasher.HashPassword(defaultAdmin, "123");
 
-                _context.Users.Add(testUser);
+                _context.Users.Add(defaultAdmin);
 
                 await _context.SaveChangesAsync();
             }
@@ -61,18 +57,13 @@ namespace Login.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = _context.Users.FirstOrDefault(u =>
-                u.Username == Username ||
-                u.Email == Username);
+            var user = _context.Users.FirstOrDefault(u => u.Username == Username || u.Email == Username);
 
             if (user != null)
             {
                 var hasher = new PasswordHasher<User>();
 
-                var result = hasher.VerifyHashedPassword(
-                    user,
-                    user.PasswordHash,
-                    Password);
+                var result = hasher.VerifyHashedPassword(user, user.PasswordHash, Password);
 
                 if (result == PasswordVerificationResult.Success)
                 {

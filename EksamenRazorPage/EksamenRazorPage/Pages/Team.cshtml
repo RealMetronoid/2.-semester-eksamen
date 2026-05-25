@@ -1,24 +1,24 @@
 ﻿@page
 @model EksamenRazorPage.Pages.TeamModel
 @{
-    ViewData["Title"] = "Mit Hold";
+    ViewData["Title"] = "My Teams";
 }
 
-<h2 class="text-white mb-4">Mine Hold</h2>
+<h2 class="text-white mb-4">My Teams</h2>    
 
-<!-- Opret hold -->
+<!-- Create Team -->
 <div class="card mb-4">
     <div class="card-body">
         <form method="post" asp-page-handler="Create" class="d-flex gap-2">
-            <input type="text" name="teamName" class="form-control" placeholder="Hold navn..." required>
-            <button type="submit" class="btn btn-danger">Opret hold</button>
+            <input type="text" name="teamName" class="form-control" placeholder="Team name..." required>
+            <button type="submit" class="btn btn-danger">Create Team</button>
         </form>
     </div>
 </div>
 
 @if (!Model.Teams.Any())
 {
-    <p class="text-muted">Du har ingen hold endnu.</p>
+    <p class="text-muted">You don't have any teams yet.</p>
 }
 
 @foreach (var team in Model.Teams)
@@ -29,8 +29,8 @@
             <form method="post" asp-page-handler="Delete">
                 <input type="hidden" name="teamId" value="@team.Id">
                 <button type="submit" class="btn btn-sm btn-outline-danger"
-                        onclick="return confirm('Slet holdet?')">
-                    Slet hold
+                        onclick="return confirm('Delete team?')">
+                    Delete Team
                 </button>
             </form>
         </div>
@@ -56,7 +56,7 @@
                                     <div class="fw-bold small">@pokemon.Name</div>
                                     <form method="post" asp-page-handler="RemoveMember" class="mt-1">
                                         <input type="hidden" name="memberId" value="@member.Id">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">✕ Fjern</button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">✕ Remove</button>
                                     </form>
                                 }
                                 else
@@ -70,24 +70,24 @@
                 }
             </div>
 
-            <!-- Tilføj pokemon -->
+            <!-- Add Pokemon -->
             @if (team.Members.Count < 6)
             {
                 <form method="post" asp-page-handler="AddMember" class="d-flex gap-2">
                     <input type="hidden" name="teamId" value="@team.Id">
                     <select name="pokemonId" class="form-control">
-                        <option value="0">Vælg en Pokemon...</option>
+                        <option value="0">Select a Pokemon...</option>
                         @foreach (var p in Model.AllPokemon)
                         {
                             <option value="@p.Id">#@p.Id.ToString("D3") @p.Name</option>
                         }
                     </select>
-                    <button type="submit" class="btn btn-danger">Tilføj</button>
+                    <button type="submit" class="btn btn-danger">Add</button>
                 </form>
             }
             else
             {
-                <small class="text-muted">Holdet er fuldt (6/6)</small>
+                <small class="text-muted">Team is full (6/6)</small>
             }
 
         </div>
