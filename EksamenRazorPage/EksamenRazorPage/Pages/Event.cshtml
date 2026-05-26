@@ -30,8 +30,8 @@
                 <summary class="filter-summary">
                     <span>Filter events</span>
                     <span class="filter-current">
-                        @(string.IsNullOrWhiteSpace(Model.SelectedEventType) || Model.SelectedEventType == "Alle"
-                            ? "Alle"
+                        @(string.IsNullOrWhiteSpace(Model.SelectedEventType) || Model.SelectedEventType == "All"
+                            ? "All"
                             : Model.SelectedEventType)
                     </span>
                 </summary>
@@ -40,7 +40,7 @@
                     <button type="submit"
                             name="SelectedEventType"
                             value="Alle"
-                            class="filter-option @(string.IsNullOrWhiteSpace(Model.SelectedEventType) || Model.SelectedEventType == "Alle" ? "selected" : "")">
+                            class="filter-option @(string.IsNullOrWhiteSpace(Model.SelectedEventType) || Model.SelectedEventType == "All" ? "selected" : "")">
                         Alle
                     </button>
 
@@ -109,13 +109,13 @@
                             @if (eventItem.IsActive)
                             {
                                 <span class="event-status active">
-                                    Aktiv
+                                    Active
                                 </span>
                             }
                             else
                             {
                                 <span class="event-status ended">
-                                    Afsluttet
+                                    Ended
                                 </span>
                             }
                         </div>
@@ -127,13 +127,13 @@
                                    target="_blank"
                                    rel="noopener noreferrer"
                                    class="event-link">
-                                    Åbn ↗
+                                    Open ↗
                                 </a>
                             }
                             else
                             {
                                 <span class="event-link disabled">
-                                    Åbn ↗
+                                    Open ↗
                                 </span>
                             }
                         </div>
@@ -145,8 +145,8 @@
         else
         {
             <div class="empty-events">
-                <h2>Ingen events</h2>
-                <p>Der er ingen kommende events lige nu.</p>
+                <h2>No events</h2>
+                <p>There are currently no events actvie.</p>
             </div>
         }
 
@@ -173,14 +173,16 @@
                 <button type="button" class="admin-tab" onclick="showAdminForm('update', this)">
                     Update
                 </button>
-
+                    <button type="button" class="admin-tab" onclick="showAdminForm('inactive', this)">
+                    Set Inactive
+                </button>
                 <button type="button" class="admin-tab" onclick="showAdminForm('delete', this)">
                     Delete
                 </button>
             </div>
 
             <!-- CREATE -->
-            <form method="post" asp-page-handler="Create" id="createForm" class="admin-form active">
+            <form method="post" asp-page-handler="AddEvent" id="createForm" class="admin-form active">
                 <h3>Create Event</h3>
 
                 <label>Name</label>
@@ -215,7 +217,7 @@
             </form>
 
             <!-- UPDATE -->
-            <form method="post" asp-page-handler="Update" id="updateForm" class="admin-form">
+        <form method="post" asp-page-handler="UpdateEvent" id="updateForm" class="admin-form"> 
                 <h3>Update Event</h3>
 
                 <label>Event to update</label>
@@ -249,22 +251,34 @@
                     <option value="Distribution">Distribution</option>
                 </select>
 
-                <label class="checkbox-label">
-                    <input asp-for="EditEvent.IsActive" />
-                    Active
-                </label>
-
                 <button type="submit" class="admin-submit-btn">
                     Update Event
                 </button>
             </form>
+            <!-- SET INACTIVE -->
+            <form method="post" asp-page-handler="SetInactiveEvent" id="inactiveForm" class="admin-form">
+                <h3>Set Event Inactive</h3>
 
+                <label>Event to set inactive</label>
+                <select name="id">
+                    @foreach (var eventItem in Model.AllEvents)
+                    {
+                        <option value="@eventItem.Id">
+                            @eventItem.Id - @eventItem.Name
+                        </option>
+                    }
+                </select>
+
+                <button type="submit" class="admin-warning-btn">
+                    Set Inactive
+                </button>
+            </form>
             <!-- DELETE -->
-            <form method="post" asp-page-handler="Delete" id="deleteForm" class="admin-form">
+            <form method="post" asp-page-handler="DeleteEvent" id="deleteForm" class="admin-form">
                 <h3>Delete Event</h3>
 
                 <label>Event to delete</label>
-                <select name="DeleteEventId">
+                <select name="id">
                     @foreach (var eventItem in Model.AllEvents)
                     {
                         <option value="@eventItem.Id">
