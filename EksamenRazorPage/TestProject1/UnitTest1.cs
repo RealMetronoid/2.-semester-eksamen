@@ -1,4 +1,12 @@
-﻿using EksamenRazorPage.Models;
+﻿using EksamenRazorPage;
+using EksamenRazorPage.Models;
+using Login.Pages;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+
+using Xunit;
 
 namespace TestProject1
 {
@@ -35,7 +43,7 @@ namespace TestProject1
         {
             // Arrange
             var options = new DbContextOptionsBuilder<PokemonContext>()
-                .UseInMemoryDatabase(databaseName: "RegisterTestDb")
+                .UseInMemoryDatabase("RegisterTestDb")
                 .Options;
 
             var context = new PokemonContext(options);
@@ -50,7 +58,9 @@ namespace TestProject1
             };
 
             // Simulate invalid ModelState
-            model.ModelState.AddModelError("ConfirmPassword", "Passwords do not match");
+            model.ModelState.AddModelError(
+                "ConfirmPassword",
+                "Passwords do not match");
 
             // Act
             var result = await model.OnPostCreateUser();
