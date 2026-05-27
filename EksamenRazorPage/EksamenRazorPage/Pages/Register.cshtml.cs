@@ -54,7 +54,7 @@ namespace Login.Pages
         }
 
         // CREATE USER / REGISTER
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostCreateUser()
         {
             if (!ModelState.IsValid)
             {
