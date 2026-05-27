@@ -70,8 +70,43 @@ namespace TestProject1
         }
 
 
+        [Fact]
+        public async Task TestAddingExistingUser()
+        {
+            //  Arrange
+            var options = new DbContextOptionsBuilder<PokemonContext>()
+                .UseInMemoryDatabase("RegisterTestDb")
+                .Options;
 
+            var context = new PokemonContext(options);
 
+            var registerModel = new RegisterModel(context)
+            {
+                UserList = new List<User>()
+                {
+                    new User() {
+                        Username = "David",
+                        DisplayName = "Dab003",
+                        Email = "a@gmail.com",
+                        PasswordHash = "abc",
+                        IsAdmin = false
+                    }
+                },
+
+                Username = "David",
+                DisplayName = "Dab003",
+                Email = "a@gmail.com",
+                Password = "abc",
+                ConfirmPassword = "abc"
+            };
+
+            //  Act
+            var result = await registerModel.OnPostCreateUser();
+
+            //  Assert
+            Assert.IsType<PageResult>(result);
+
+        }
     }
 }
 
