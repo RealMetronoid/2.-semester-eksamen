@@ -1,4 +1,12 @@
-﻿using EksamenRazorPage.Models;
+﻿using EksamenRazorPage;
+using EksamenRazorPage.Models;
+using Login.Pages;
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+
+using Xunit;
 
 namespace TestProject1
 {
@@ -28,6 +36,76 @@ namespace TestProject1
             // Assert - Movepool should now contain the move
             Assert.Single(pokemon.Movepool);
             Assert.Contains(move, pokemon.Movepool);
+        }
+
+        [Fact]
+        public async Task PasswordNotMatching_ReturnsPageResult()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PokemonContext>()
+                .UseInMemoryDatabase("RegisterTestDb")
+                .Options;
+
+            var context = new PokemonContext(options);
+
+            var model = new RegisterModel(context)
+            {
+                Username = "Marcus",
+                DisplayName = "Marc3935",
+                Email = "a@gmail.com",
+                Password = "abc",
+                ConfirmPassword = "xyz"
+            };
+
+            // Simulate invalid ModelState
+            model.ModelState.AddModelError(
+                "ConfirmPassword",
+                "Passwords do not match");
+
+            // Act
+            var result = await model.OnPostCreateUser();
+
+            // Assert
+            Assert.IsType<PageResult>(result);
+        }
+
+
+        [Fact]
+        public async Task TestAddingExistingUser()
+        {
+            //  Arrange
+            var options = new DbContextOptionsBuilder<PokemonContext>()
+                .UseInMemoryDatabase("RegisterTestDb")
+                .Options;
+
+            var context = new PokemonContext(options);
+
+            var registerModel = new RegisterModel(context)
+            {
+                UserList = new List<User>()
+                {
+                    new User() {
+                        Username = "David",
+                        DisplayName = "Dab003",
+                        Email = "a@gmail.com",
+                        PasswordHash = "abc",
+                        IsAdmin = false
+                    }
+                },
+
+                Username = "David",
+                DisplayName = "Dab003",
+                Email = "a@gmail.com",
+                Password = "abc",
+                ConfirmPassword = "abc"
+            };
+
+            //  Act
+            var result = await registerModel.OnPostCreateUser();
+
+            //  Assert
+            Assert.IsType<PageResult>(result);
+
         }
     }
 }
